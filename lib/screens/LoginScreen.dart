@@ -3,7 +3,8 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:professor_interface/HandleNetworking.dart';
 import 'package:professor_interface/Models/FutureResponse.dart';
 import 'package:professor_interface/components/ReusableButton.dart';
-import 'package:professor_interface/screens/FacultyHomePage.dart';
+import 'package:professor_interface/screens/coursesList.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
 
@@ -101,6 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             });
 
                             FutureResponse result = await handleNetworking.loginFaculty(email, password);
+                            final prefs = await SharedPreferences.getInstance();
 
                             setState(() {
                               isLoading = false;
@@ -116,12 +118,18 @@ class _LoginScreenState extends State<LoginScreen> {
                               }
                               else
                               {
+                                String profId = email.substring(0,email.indexOf('@'));
+                                print(profId);
+                                prefs.setString("id", profId);
+                                prefs.setBool("isUserLoggedIn", true);
+
                                 Scaffold.of(context).showSnackBar(SnackBar(
                                   content: Text(result.msg),
                                 ));
-                                Navigator.push(
+                                Navigator.pushAndRemoveUntil(
                                   context,
-                                  MaterialPageRoute(builder: (context) => FacultyHomePage()),
+                                  MaterialPageRoute(builder: (context) => CoursesList()),
+                                    (Route<dynamic> route) => false,
                                 );
                               }
                             }

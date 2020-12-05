@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:professor_interface/screens/Page1.dart';
+import 'package:professor_interface/screens/Page2.dart';
 
 class FacultyHomePage extends StatefulWidget {
   @override
@@ -6,7 +8,16 @@ class FacultyHomePage extends StatefulWidget {
 }
 
 class _FacultyHomePageState extends State<FacultyHomePage> {
+
+
+
   int _currentIndex = 0;
+  List<Widget> widgetOptions = [
+  Page1(),
+    Page2(),
+
+  ];
+
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,19 +25,7 @@ class _FacultyHomePageState extends State<FacultyHomePage> {
         backgroundColor: Colors.black,
         title: Text('AMS'),
       ),
-      body: new Container(
-        padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-        height: 220,
-        width: double.maxFinite,
-        child: Card(
-          child: new InkWell(onTap: () {
-            Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text('Tap'),
-            ));
-          }),
-          elevation: 5,
-        ),
-      ),
+      body: widgetOptions.elementAt(_currentIndex),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,
@@ -45,13 +44,13 @@ class _FacultyHomePageState extends State<FacultyHomePage> {
             icon: Icon(Icons.home),
           ),
           BottomNavigationBarItem(
-            label: 'Courses',
+            label: 'Enrolled Students',
             icon: Icon(Icons.format_list_bulleted),
           ),
-          BottomNavigationBarItem(
-            label: 'Settings',
-            icon: Icon(Icons.account_circle_outlined),
-          ),
+          // BottomNavigationBarItem(
+          //   label: 'Settings',
+          //   icon: Icon(Icons.account_circle_outlined),
+          // ),
         ],
       ),
     );
