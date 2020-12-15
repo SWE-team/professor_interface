@@ -118,9 +118,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               }
                               else
                               {
-                                String profId = email.substring(0,email.indexOf('@'));
-                                print(profId);
-                                prefs.setString("id", profId);
+
+                                print(result.msg);
+                                prefs.setString("id", result.msg);
                                 prefs.setBool("isUserLoggedIn", true);
 
                                 Scaffold.of(context).showSnackBar(SnackBar(

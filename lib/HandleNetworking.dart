@@ -9,6 +9,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class HandleNetworking
 {
+
+  final String url2 =
+      "https://ams-swe.herokuapp.com";
   Future<FutureResponse> registerFaculty(String facultyEmail,String facultyName,String facultyPassword) async {
 
     final http.Response response = await http.post(
@@ -59,7 +62,7 @@ class HandleNetworking
     {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String profId = prefs.getString('id');
-      final http.Response response = await http.get("https://lit-reef-57031.herokuapp.com/api/course/getcourses/" + profId);
+      final http.Response response = await http.get(url2 + "/api/course/getcourses/" + profId);
 
       if(response.statusCode == 200)
         {
@@ -70,7 +73,8 @@ class HandleNetworking
 
             for (int i = 0;i < courses.length;i++)
             {
-              coursesTileList.add(CourseTile("Todo", courses[i]['name']));
+              print(courses[i]);
+              coursesTileList.add(CourseTile(courses[i]['_id'], courses[i]['name'],courses[i]['course_id']));
             }
 
             return coursesTileList;
@@ -78,7 +82,7 @@ class HandleNetworking
         }
         else
           {
-            return null;
+            throw Exception('Failed to load album');
           }
 
     }
@@ -89,7 +93,7 @@ class HandleNetworking
       String profId = prefs.getString('id');
 
       final http.Response response = await http.post(
-          "https://lit-reef-57031.herokuapp.com/api/course/create",
+          url2 + "/api/course/create",
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
@@ -97,8 +101,42 @@ class HandleNetworking
 
             'name' : courseName,
             'admin_id': profId,
+            'course_id' : courseId,
           })
 
+      );
+
+
+      if(response.statusCode == 200)
+        return true;
+      else
+        return false;
+    }
+
+    Future<int> openPortal(String id) async
+    {
+      final http.Response response = await http.get(url2 + "/api/course/start/" + id);
+
+      if(response.statusCode == 200)
+        {
+          var decodedRes = jsonDecode(response.body);
+          print(decodedRes['result']);
+          return decodedRes['result'];
+        }
+      else
+        {
+          return null;
+        }
+
+    }
+
+    Future<bool> deleteCourse(String id) async
+    {
+      final http.Response response = await http.delete(
+        url2 + '/$id',
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
       );
 
       if(response.statusCode == 200)
@@ -106,4 +144,33 @@ class HandleNetworking
       else
         return false;
     }
+
+  Future<List<CourseTile>> getEnrolledStudents(String id) async
+  {
+
+    final http.Response response = await http.get(url2 + "/api/course/home/" + id);
+
+    if(response.statusCode == 200)
+    {
+      var jsonRes = jsonDecode(response.body);
+      List courses = jsonRes['result'];
+      print(courses);
+      List<CourseTile> coursesTileList = [];
+
+      for (int i = 0;i < courses.length;i++)
+      {
+        print(courses[i]);
+        coursesTileList.add(CourseTile(courses[i]['_id'], courses[i]['name'],courses[i]['course_id']));
+      }
+
+      return coursesTileList;
+
+    }
+    else
+    {
+      throw Exception('Failed to load album');
+    }
+
+  }
+
 }

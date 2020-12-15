@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../HandleNetworking.dart';
+
 
 class Page1 extends StatefulWidget {
 
-
+  final String id;
+  Page1(this.id);
 
   @override
   _Page1State createState() => _Page1State();
@@ -15,7 +18,8 @@ class _Page1State extends State<Page1> {
 
 
   bool isPortalActive = false;
-  String code = "ABCDEF";
+  String code = " ";
+  HandleNetworking handleNetworking = HandleNetworking();
 
 
   @override
@@ -27,21 +31,33 @@ class _Page1State extends State<Page1> {
       children: [
         SizedBox(width: double.infinity,),
         GestureDetector(
-          onTap: (){
+          onTap: () async {
 
+            print(widget.id);
             if(!isPortalActive)
               {
-                setState(() {
-                  isPortalActive = true;
-                });
+                code = (await handleNetworking.openPortal(widget.id)).toString();
+                if(code != null)
+                  {
+                    setState(() {
+                      isPortalActive = true;
+                    });
 
-                Future.delayed(Duration(seconds: 40),(){
+                    Future.delayed(Duration(seconds: 40),(){
 
-                  setState(() {
-                    isPortalActive = false;
-                  });
+                      setState(() {
+                        isPortalActive = false;
+                      });
 
-                });
+                    });
+                  }
+                else
+                  {
+                    setState(() {
+                      code = "Some error occured";
+                    });
+
+                  }
 
               }
 
@@ -68,8 +84,9 @@ class _Page1State extends State<Page1> {
         Padding(
           padding: const EdgeInsets.all(15.0),
           child: Text(
-          isPortalActive ? code : ' ',
+            code,
           style: TextStyle(
+            color: isPortalActive ? Colors.green : Colors.red,
             fontSize: 22.0,
           ),
           ),

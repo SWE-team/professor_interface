@@ -3,17 +3,19 @@ import 'package:professor_interface/screens/FacultyHomePage.dart';
 
 class CourseTile extends StatelessWidget {
 
+  final String id;
   final String courseName;
   final String courseCode;
 
-  CourseTile(this.courseCode,this.courseName);
+  CourseTile(this.id,this.courseCode,this.courseName);
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
+        print(id);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => FacultyHomePage()),
+          MaterialPageRoute(builder: (context) => FacultyHomePage(id)),
         );
       },
       child: Card(

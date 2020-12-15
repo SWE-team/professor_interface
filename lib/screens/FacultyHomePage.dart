@@ -3,6 +3,8 @@ import 'package:professor_interface/screens/Page1.dart';
 import 'package:professor_interface/screens/Page2.dart';
 
 class FacultyHomePage extends StatefulWidget {
+  final String id;
+  FacultyHomePage(this.id);
   @override
   _FacultyHomePageState createState() => _FacultyHomePageState();
 }
@@ -11,15 +13,17 @@ class _FacultyHomePageState extends State<FacultyHomePage> {
 
 
 
+  String courseId;
   int _currentIndex = 0;
-  List<Widget> widgetOptions = [
-  Page1(),
-    Page2(),
-
-  ];
+  List<Widget> widgetOptions = [];
 
 
   Widget build(BuildContext context) {
+    widgetOptions = [
+      Page1(widget.id),
+      Page2(),
+
+    ];
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
