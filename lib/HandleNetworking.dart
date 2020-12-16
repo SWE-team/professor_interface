@@ -5,6 +5,7 @@ import 'dart:convert';
 
 import 'package:professor_interface/Models/FutureResponse.dart';
 import 'package:professor_interface/components/CourseTile.dart';
+import 'package:professor_interface/components/EnrolledStudentTile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HandleNetworking
@@ -68,12 +69,12 @@ class HandleNetworking
         {
             var jsonRes = jsonDecode(response.body);
             List courses = jsonRes['result'];
-            print(courses);
+            // print(courses);
             List<CourseTile> coursesTileList = [];
 
             for (int i = 0;i < courses.length;i++)
             {
-              print(courses[i]);
+              // print(courses[i]);
               coursesTileList.add(CourseTile(courses[i]['_id'], courses[i]['name'],courses[i]['course_id']));
             }
 
@@ -145,7 +146,7 @@ class HandleNetworking
         return false;
     }
 
-  Future<List<CourseTile>> getEnrolledStudents(String id) async
+  Future<List<EnrolledStudentTile>> getEnrolledStudents(String id) async
   {
 
     final http.Response response = await http.get(url2 + "/api/course/home/" + id);
@@ -153,17 +154,16 @@ class HandleNetworking
     if(response.statusCode == 200)
     {
       var jsonRes = jsonDecode(response.body);
-      List courses = jsonRes['result'];
-      print(courses);
-      List<CourseTile> coursesTileList = [];
+      var students= jsonRes['name'];
+      print(students);
+      List<EnrolledStudentTile> studentTileList = [];
 
-      for (int i = 0;i < courses.length;i++)
+      for (int i = 0;i < students.length;i++)
       {
-        print(courses[i]);
-        coursesTileList.add(CourseTile(courses[i]['_id'], courses[i]['name'],courses[i]['course_id']));
+        studentTileList.add(EnrolledStudentTile(jsonRes['roll'][i],jsonRes['name'][i],jsonRes['attendance'][i].toDouble()));
       }
 
-      return coursesTileList;
+      return studentTileList;
 
     }
     else

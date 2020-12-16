@@ -55,10 +55,13 @@ class _CoursesListState extends State<CoursesList> {
 
 
     Future<List<CourseTile>> coursesList;
-    void fetchCoursesList() async
+    Future<void> fetchCoursesList() async
     {
       HandleNetworking handleNetworking = HandleNetworking();
       coursesList =  handleNetworking.getCourses();
+      setState(() {
+
+      });
     }
 
     @override
@@ -74,17 +77,17 @@ class _CoursesListState extends State<CoursesList> {
         backgroundColor: Colors.black,
         title: Text('AMS'),
         actions: [
-          IconButton(
-              icon: Icon(
-                Icons.refresh,
-                color: Colors.white,
-              ),
-              onPressed: (){
-                fetchCoursesList();
-                setState(() {
-                  
-                });
-              }),
+          // IconButton(
+          //     icon: Icon(
+          //       Icons.refresh,
+          //       color: Colors.white,
+          //     ),
+          //     onPressed: (){
+          //       fetchCoursesList();
+          //       setState(() {
+          //
+          //       });
+          //     }),
           IconButton(
         icon: Icon(
         Icons.power_settings_new,
@@ -99,8 +102,11 @@ class _CoursesListState extends State<CoursesList> {
          future: coursesList,
          builder: (context, snapshot) {
            if (snapshot.hasData) {
-             return ListView(
-               children: snapshot.data,
+             return RefreshIndicator(
+               onRefresh: fetchCoursesList,
+               child: ListView(
+                 children: snapshot.data,
+               ),
              );
            } else if (snapshot.hasError) {
              return Text("${snapshot.error}");

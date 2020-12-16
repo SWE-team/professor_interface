@@ -12,8 +12,8 @@ class FacultyHomePage extends StatefulWidget {
 class _FacultyHomePageState extends State<FacultyHomePage> {
 
 
-
-  String courseId;
+  //
+  // String courseId;
   int _currentIndex = 0;
   List<Widget> widgetOptions = [];
 
@@ -21,7 +21,7 @@ class _FacultyHomePageState extends State<FacultyHomePage> {
   Widget build(BuildContext context) {
     widgetOptions = [
       Page1(widget.id),
-      Page2(),
+      Page2(widget.id),
 
     ];
     return Scaffold(
