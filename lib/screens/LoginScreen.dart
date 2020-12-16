@@ -3,6 +3,7 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:professor_interface/HandleNetworking.dart';
 import 'package:professor_interface/Models/FutureResponse.dart';
 import 'package:professor_interface/components/ReusableButton.dart';
+import 'package:professor_interface/screens/changePasswordScreen.dart';
 import 'package:professor_interface/screens/coursesList.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -143,6 +144,23 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                         );
                       }
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 80.0,vertical: 18.0,),
+                    child: GestureDetector(
+                      onTap: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ChangePasswordScreen()),
+                        );
+                      },
+                      child: Text(
+                        'Forget Password',
+                        style: TextStyle(
+                          color: Colors.blue,
+                        ),
+                      ),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30.0,vertical: 18.0),

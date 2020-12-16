@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
 import 'package:professor_interface/HandleNetworking.dart';
 import 'package:professor_interface/screens/FacultyHomePage.dart';
+
 
 class CourseTile extends StatelessWidget {
 
@@ -11,9 +13,17 @@ class CourseTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onLongPress: (){
+      onLongPress: ()async {
         HandleNetworking handleNetworking = HandleNetworking();
-        handleNetworking.deleteCourse(id);
+        bool res = await handleNetworking.deleteCourse(id);
+        if(res)
+          {
+            Toast.show("Successfully deleted course", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+          }
+        else
+          {
+            Toast.show("OOPS! Some error occured occur while deleting a course", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+          }
       },
       onTap: (){
         print(id);

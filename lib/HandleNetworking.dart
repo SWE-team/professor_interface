@@ -59,6 +59,30 @@ class HandleNetworking
 
   }
 
+  Future<FutureResponse> resetPassword(String facultyEmail,String newPassword) async {
+
+    final http.Response response = await http.post(
+        "https://signin-rest-api.herokuapp.com/faculty/resetPassword",
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          'email': facultyEmail,
+          'password': newPassword,
+        })
+
+    );
+    print(response.body);
+    if(response.statusCode == 200 || response.statusCode == 400 || response.statusCode == 500)
+      return FutureResponse.fromJson(jsonDecode(response.body));
+    else
+      return null;
+
+
+  }
+
+
+
     Future<List<CourseTile>> getCourses() async
     {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -134,7 +158,7 @@ class HandleNetworking
     Future<bool> deleteCourse(String id) async
     {
       final http.Response response = await http.delete(
-        url2 + '/$id',
+        url2 + '/api/course/delete/$id',
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
