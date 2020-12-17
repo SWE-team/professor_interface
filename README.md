@@ -17,5 +17,3 @@ An android app for faculties to manage course and see attendance of enrolled stu
 <img src="images/image8.jpg" width=250 height=550>
 <img src="images/image9.jpg" width=250 height=550>
 </p>
-
-<center><h6 align="center">Made with ❤️ by Jatin, Kushagra and Abhijeet</h6></center>
