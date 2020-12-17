@@ -27,7 +27,7 @@ class WelcomeScreen extends StatelessWidget {
             ),
             SizedBox(height: 45.0),
             Text(
-              "AMS for Faculties",
+              "Faculty Portal",
               style: TextStyle(
                 fontSize: 30.0,
                 fontWeight: FontWeight.bold,
